@@ -1,0 +1,43 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(BuildID)-$(SourceBranchName)
+
+trigger: none
+
+parameters:
+  - name: image
+    displayName: What do you want me to do
+    type: string
+    default: test 
+    values:
+    - Build
+    - test
+  - name: image
+    displayName: What do you want me to do
+    type: radio
+    default: divya
+    options:
+        one: divya
+        two: tyson
+  - name: yui
+    type: boolean
+    default: true
+
+pr: none
+
+pool:
+  name: Azure Pipelines
+stages:
+- stage: build
+  jobs:
+   - job: build
+     steps:
+       - template: version.yml
+       - template: install.yml
+       - template: build.yml
+       - template: bash.yml
+       - template: partifact.yml
+
+- stage: deploy
+  jobs:
+   - job: deploy
+     steps:
+       - template: deploy.yml
